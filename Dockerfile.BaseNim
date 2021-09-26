@@ -1,0 +1,10 @@
+ARG NWN_VERSION=dev
+# nwnsc compiler
+FROM nwneetools/nwnsc:latest as nwnsc
+# nwn files
+FROM beamdog/nwserver:$NWN_VERSION AS nwn
+# nim image
+FROM nimlang/nim:latest as nasher
+COPY --from=nwnsc usr/local/bin/nwnsc usr/local/bin/nwnsc
+COPY --from=nwn /nwn/data /nwn/data
+RUN nimble install neverwinter -y
