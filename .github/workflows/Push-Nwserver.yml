@@ -1,4 +1,4 @@
-name: Build & Push Community Nwserver Images
+name: Build & Push Nwserver Images
 
 on:
   workflow_dispatch:

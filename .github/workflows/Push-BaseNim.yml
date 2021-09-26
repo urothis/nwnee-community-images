@@ -1,4 +1,4 @@
-name: Build & Push Community BaseNim Images
+name: Build & Push BaseNim Image
 
 on:
   workflow_dispatch:
