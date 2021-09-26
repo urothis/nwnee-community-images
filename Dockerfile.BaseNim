@@ -1,10 +1,13 @@
 ARG NWN_VERSION=dev
 # nwnsc compiler
-FROM nwneetools/nwnsc:latest as nwnsc
+# https://hub.docker.com/r/nwneetools/nwnsc/tags
+FROM nwneetools/nwnsc:d0dccca as nwnsc
 # nwn files
+# https://hub.docker.com/r/beamdog/nwserver/tags
 FROM beamdog/nwserver:$NWN_VERSION AS nwn
 # nim image
-FROM nimlang/nim:latest as nasher
+# https://hub.docker.com/r/nimlang/nim/tags
+FROM nimlang/nim:1.2.12 as nasher
 COPY --from=nwnsc usr/local/bin/nwnsc usr/local/bin/nwnsc
 COPY --from=nwn /nwn/data /nwn/data
 RUN nimble install neverwinter -y
