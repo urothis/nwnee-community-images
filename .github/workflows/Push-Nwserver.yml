@@ -43,7 +43,7 @@ jobs:
             IMAGE=debian:buster-slim
           tags: |
             ${{ github.repository_owner }}/${{ github.repository }}:nwserver-${{ github.event.inputs.nwnVersion }}-debian-buster
-            ghcr.io/${{ github.repository }}:nwserver-${{ github.event.inputs.nwnVersion }}-debian-buster
+            ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:nwserver-${{ github.event.inputs.nwnVersion }}-debian-buster
       - 
         name: Build and push debian bullseye nwserver image
         uses: docker/build-push-action@v2
@@ -56,7 +56,7 @@ jobs:
             IMAGE=debian:bullseye-slim
           tags: |
             ${{ github.repository_owner }}/${{ github.repository }}:nwserver-${{ github.event.inputs.nwnVersion }}-debian-bullseye
-            ghcr.io/${{ github.repository }}:nwserver-${{ github.event.inputs.nwnVersion }}-debian-bullseye
+            ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:nwserver-${{ github.event.inputs.nwnVersion }}-debian-bullseye
       - 
         name: Build and push ubuntu focal nwserver image
         uses: docker/build-push-action@v2
@@ -69,4 +69,4 @@ jobs:
             IMAGE=ubuntu:focal
           tags: |
             ${{ github.repository_owner }}/${{ github.repository }}:nwserver-${{ github.event.inputs.nwnVersion }}-ubuntu-focal
-            ghcr.io/${{ github.repository }}:nwserver-${{ github.event.inputs.nwnVersion }}-ubuntu-focal
+            ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:nwserver-${{ github.event.inputs.nwnVersion }}-ubuntu-focal
