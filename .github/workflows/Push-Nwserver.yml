@@ -62,4 +62,4 @@ jobs:
             NWN_VERSION=${{ github.event.inputs.nwnVersion }}
             IMAGE=ubuntu:focal
           tags: |
-            urothis/nwnee-community-images::nwserver-${{ github.event.inputs.nwnVersion }}-ubuntu-focal
+            urothis/nwnee-community-images:nwserver-${{ github.event.inputs.nwnVersion }}-ubuntu-focal
