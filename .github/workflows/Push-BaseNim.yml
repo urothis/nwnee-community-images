@@ -27,13 +27,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Login to GitHub Container Registry
-        uses: docker/login-action@v1 
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
       - 
         name: Build and push nwdata-nim-${{ github.event.inputs.nwnVersion }} image
         uses: docker/build-push-action@v2.7.0
@@ -46,4 +39,3 @@ jobs:
             NWN_VERSION=${{ github.event.inputs.nwnVersion }}
           tags: |
             ${{ github.repository_owner }}/${{ github.repository }}:nwdata-nim-${{ github.event.inputs.nwnVersion }}
-            ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:nwdata-nim-${{ github.event.inputs.nwnVersion }}
