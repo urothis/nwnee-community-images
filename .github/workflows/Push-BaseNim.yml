@@ -22,14 +22,14 @@ jobs:
         name: Login to Dockerhub Container Registry
         uses: docker/login-action@v1 
         with:
-          username: urothis
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Login to GitHub Container Registry
         uses: docker/login-action@v1 
         with:
           registry: ghcr.io
-          username: urothis
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - 
         name: Build and push nwdata-nim-${{ github.event.inputs.nwnVersion }} image
@@ -41,5 +41,5 @@ jobs:
           build-args: |
             NWN_VERSION=${{ github.event.inputs.nwnVersion }}
           tags: |
-            urothis/nwnee-community-images:nwdata-nim-${{ github.event.inputs.nwnVersion }}
+            docker.io/urothis/nwnee-community-images:nwdata-nim-${{ github.event.inputs.nwnVersion }}
             ghcr.io/nwnee-community-images:nwdata-nim-${{ github.event.inputs.nwnVersion }}
