@@ -32,10 +32,10 @@ jobs:
         uses: docker/build-push-action@v2.7.0
         with:
           push: true
-          cache-from: type=registry,ref=${{ github.repository_owner }}/${{ github.repository }}:nwdata-nim-${{ github.event.inputs.nwnVersion }}
+          cache-from: type=registry,ref=urothis/nwnee-community-images:nwdata-nim-${{ github.event.inputs.nwnVersion }}
           cache-to: type=inline
           file: Dockerfile.BaseNim
           build-args: |
             NWN_VERSION=${{ github.event.inputs.nwnVersion }}
           tags: |
-            ${{ github.repository_owner }}/${{ github.repository }}:nwdata-nim-${{ github.event.inputs.nwnVersion }}
+            urothis/nwnee-community-images:nwdata-nim-${{ github.event.inputs.nwnVersion }}
