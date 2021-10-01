@@ -41,5 +41,5 @@ jobs:
           build-args: |
             NWN_VERSION=${{ github.event.inputs.nwnVersion }}
           tags: |
-            docker.io/urothis/nwnee-community-images:nwdata-nim-${{ github.event.inputs.nwnVersion }}
-            ghcr.io/nwnee-community-images:nwdata-nim-${{ github.event.inputs.nwnVersion }}
+            ${{ github.repository_owner }}/nwnee-community-images:nwdata-nim-${{ github.event.inputs.nwnVersion }}
+            ghcr.io/${{ github.repository_owner }}/nwnee-community-images:nwdata-nim-${{ github.event.inputs.nwnVersion }}
