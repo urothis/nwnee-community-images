@@ -3,7 +3,6 @@ FROM urothis/nwnee-community-images:ci-base-${NWN_VERSION}
 WORKDIR /build
 ENV PATH="/home/nwsync/.nimble/bin:$PATH"
 RUN apt update && apt install git -y && git clone https://github.com/Beamdog/nwsync.git
-WORKDIR /build/nwsync
 RUN nimble build -d:release -y
 #overwrite entry to pick the proper nwsync needed, nwsync_fetch, nwsync_print, nwsync_prune, nwsync_write
-ENTRYPOINT ["nwsync_print", "--version"]
+ENTRYPOINT ["/build/nwsync/bin/nwsync_print", "--version"]
