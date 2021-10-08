@@ -6,7 +6,7 @@ on:
 
 jobs:
   nwserver-build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         distro: ["debian:buster", "debian:buster-slim", "debian:bullseye", "debian:bullseye-slim", "ubuntu:focal"]
@@ -55,7 +55,7 @@ jobs:
             urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${{ steps.date.outputs.date }}
 
   nwnsc-build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - 
         name: Get current date
@@ -94,8 +94,8 @@ jobs:
 
 
   nwn-ci-base-build:
-    runs-on: self-hosted
     needs: nwnsc-build
+    runs-on: ubuntu-latest
     steps:
       - 
         name: Get current date
@@ -132,8 +132,8 @@ jobs:
             urothis/nwnee-community-images:ci-base-${{ github.event.client_payload.message.nwn_version }}-${{ steps.date.outputs.date }}
 
   nasher-build:
-    runs-on: self-hosted
     needs: nwn-ci-base-build
+    runs-on: ubuntu-latest
     steps:
       - 
         name: Get current date
@@ -171,7 +171,7 @@ jobs:
             urothis/nwnee-community-images:nasher-${{ github.event.client_payload.message.nwn_version }}-${{ steps.date.outputs.date }}
 
   nwsync-build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - 
         name: Get current date
