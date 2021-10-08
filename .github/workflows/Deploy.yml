@@ -1,0 +1,45 @@
+name: Push Docker Images
+on:
+  workflow_dispatch:
+    inputs:
+      nwn_version:
+        description: 'nwn version to build images for'
+        required: true
+  schedule:    
+  - cron: "* 24 * * *"
+
+jobs:
+  trigger-nightly-builds:
+    if: github.event != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nwn_version: [8193.28, 8193.29, 8193.30, 8193.32, 8193.33]
+    steps:
+      - name: Emit repository_dispatch
+        uses: mvasigh/dispatch-action@main
+        with:
+          token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+          repo: nwnee-community-images
+          owner: urothis
+          event_type: nwn_version_push
+          message: |
+            {
+              "nwn_version": "${{ matrix.nwn_version }}"
+            }
+
+  trigger-manual-builds:
+    if: github.event == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Emit repository_dispatch
+        uses: mvasigh/dispatch-action@main
+        with:
+          token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+          repo: nwnee-community-images
+          owner: urothis
+          event_type: nwn_version_push
+          message: |
+            {
+              "nwn_version": "${{ github.event.inputs.nwn_version }}"
+            }
