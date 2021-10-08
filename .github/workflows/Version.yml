@@ -92,7 +92,7 @@ jobs:
             urothis/nwnee-community-images:ci-base-${{ github.event.client_payload.message.nwn_version }}-${{ steps.date.outputs.date }}
 
   nasher-build:
-  needs: nwn-ci-base-build
+    needs: nwn-ci-base-build
     runs-on: ubuntu-latest
     steps:
       - 
