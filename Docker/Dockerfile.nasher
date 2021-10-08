@@ -1,0 +1,11 @@
+ARG NWN_VERSION=dev
+FROM urothis/nwnee-community-images:ci-base-${NWN_VERSION}
+LABEL maintainer "urothis@gmail.com"
+RUN apt update && apt install git && git clone https://github.com/squattingmonk/nasher.git && cd nasher && nimble install -y
+RUN chmod +x /home/nasher/.nimble/bin/nasher
+RUN nasher config --nssFlags:"-n ${NWN_ROOT} -o" \
+  && nasher config --installDir:"/nasher/install" \
+  && nasher config --userName:"nasher"
+RUN bash -c "mkdir -pv /nasher/install/{erf,hak,modules,tlk}"
+ENTRYPOINT [ "nasher" ]
+CMD [ "--help" ]

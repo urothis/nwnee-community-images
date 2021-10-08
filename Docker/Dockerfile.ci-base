@@ -1,0 +1,11 @@
+ARG NWN_VERSION=dev
+# nwnsc compiler
+FROM urothis/nwnee-community-images:nwnsc-${NWN_VERSION} as nwnsc
+# nwn files
+FROM beamdog/nwserver:$NWN_VERSION AS nwn
+# nim image
+FROM nimlang/nim:1.4.8
+LABEL maintainer "urothis@gmail.com"
+ENV NWN_ROOT=/nwn/data
+COPY --from=nwnsc usr/local/bin/nwnsc usr/local/bin/nwnsc
+COPY --from=nwn /nwn/data /nwn/data
