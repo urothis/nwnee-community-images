@@ -82,6 +82,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
+          pull: true
           cache-from: type=registry,ref=urothis/nwnee-community-images:nwnsc-${{ github.event.client_payload.message.nwn_version }}
           cache-to: type=inline
           file: Docker/Dockerfile.nwnsc
@@ -159,6 +160,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
+          pull: true
           cache-from: type=registry,ref=urothis/nwnee-community-images:nasher-${{ github.event.client_payload.message.nwn_version }}
           cache-to: type=inline
           file: Docker/Dockerfile.nasher
@@ -167,3 +169,42 @@ jobs:
           tags: |
             urothis/nwnee-community-images:nasher-${{ github.event.client_payload.message.nwn_version }}
             urothis/nwnee-community-images:nasher-${{ github.event.client_payload.message.nwn_version }}-${{ steps.date.outputs.date }}
+
+  nwsync-build:
+    needs: nwn-ci-base-build
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d')"
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      - 
+        name: Login to Dockerhub Container Registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - 
+        name: Build and push debian buster nwserver image
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          pull: true          
+          cache-from: type=registry,ref=urothis/nwnee-community-images:nwsync-${{ github.event.client_payload.message.nwn_version }}
+          cache-to: type=inline
+          file: Docker/Dockerfile.nwsync
+          build-args: |
+            NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
+          tags: |
+            urothis/nwnee-community-images:nwsync-${{ github.event.client_payload.message.nwn_version }}
+            urothis/nwnee-community-images:nwsync-${{ github.event.client_payload.message.nwn_version }}-${{ steps.date.outputs.date }}
