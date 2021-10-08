@@ -3,5 +3,4 @@ FROM urothis/nwnee-community-images:ci-base-${NWN_VERSION}
 LABEL maintainer "urothis@gmail.com"
 RUN apt update && apt install git && git clone https://github.com/squattingmonk/nasher.git && cd nasher && nimble install -y
 RUN chmod +x /root/.nimble/bin/nasher
-ENTRYPOINT [ "nasher" ]
-CMD [ "--help" ]
+ENTRYPOINT [ "nasher", "--help" ]
