@@ -40,7 +40,7 @@ jobs:
           file: Docker/Dockerfile.nwserver
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
-            IMAGE=${{ matrix.nwn_version }}
+            IMAGE=${{ matrix.distro }}
           tags: |
             urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ matrix.nwn_version }}-latest
             urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ matrix.nwn_version }}-${{ steps.date.outputs.date }}
