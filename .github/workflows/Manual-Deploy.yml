@@ -1,4 +1,4 @@
-name: Push Docker Images
+name: Manual Push Docker Images
 on:
   workflow_dispatch:
     inputs:

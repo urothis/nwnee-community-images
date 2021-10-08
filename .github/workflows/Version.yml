@@ -32,6 +32,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - 
+        uses: mad9000/actions-find-and-replace-string@2
+        id: fix-version
+        with:
+            source: ${{ matrix.distro }}
+            find: ':'
+            replace: '-'   
+      - 
         name: Build and push debian buster nwserver image
         uses: docker/build-push-action@v2
         with:
@@ -40,7 +47,7 @@ jobs:
           file: Docker/Dockerfile.nwserver
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
-            IMAGE=${{ matrix.distro }}
+            IMAGE=${{ steps.fix-version.outputs.value }}
           tags: |
-            urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ matrix.distro }}-latest
-            urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ matrix.distro }}-${{ steps.date.outputs.date }}
+            urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-latest
+            urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${{ steps.date.outputs.date }}
