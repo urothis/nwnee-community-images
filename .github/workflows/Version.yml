@@ -7,7 +7,6 @@ on:
 jobs:
   nwserver-build:
     runs-on: self-hosted
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         distro: ["debian:buster", "debian:buster-slim", "debian:bullseye", "debian:bullseye-slim", "ubuntu:focal"]
@@ -57,7 +56,6 @@ jobs:
 
   nwnsc-build:
     runs-on: self-hosted
-    runs-on: ubuntu-latest
     steps:
       - 
         name: Get current date
@@ -98,7 +96,6 @@ jobs:
   nwn-ci-base-build:
     runs-on: self-hosted
     needs: nwnsc-build
-    runs-on: ubuntu-latest
     steps:
       - 
         name: Get current date
@@ -137,7 +134,6 @@ jobs:
   nasher-build:
     runs-on: self-hosted
     needs: nwn-ci-base-build
-    runs-on: ubuntu-latest
     steps:
       - 
         name: Get current date
@@ -176,7 +172,6 @@ jobs:
 
   nwsync-build:
     runs-on: self-hosted
-    runs-on: ubuntu-latest
     steps:
       - 
         name: Get current date
