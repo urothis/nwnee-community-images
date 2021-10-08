@@ -42,5 +42,5 @@ jobs:
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
             IMAGE=${{ matrix.distro }}
           tags: |
-            urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ matrix.nwn_version }}-latest
-            urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ matrix.nwn_version }}-${{ steps.date.outputs.date }}
+            urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ matrix.distro }}-latest
+            urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ matrix.distro }}-${{ steps.date.outputs.date }}
