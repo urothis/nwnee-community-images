@@ -6,7 +6,7 @@ on:
         description: 'nwn version to build images for'
         required: true
   schedule:    
-  - cron: "* 24 * * *"
+  - cron: "* 23 * * *"
 
 jobs:
   trigger-nightly-builds:
