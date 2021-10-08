@@ -1,6 +1,7 @@
 ARG NWN_VERSION=dev
 FROM urothis/nwnee-community-images:ci-base-${NWN_VERSION}
 WORKDIR /build
+ENV PATH="/home/nwsync/.nimble/bin:$PATH"
 RUN apt update && apt install git -y && git clone https://github.com/Beamdog/nwsync.git
 WORKDIR /build/nwsync
 RUN nimble build -d:release -y
