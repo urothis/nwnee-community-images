@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        distro: [debian:buster, debian:buster-slim, debian:bullseye, debian:bullseye-slim, ubuntu:focal]
+        distro: ["debian:buster", "debian:buster-slim", "debian:bullseye", "debian:bullseye-slim", "ubuntu:focal"]
     steps:
       - 
         name: Get current date
