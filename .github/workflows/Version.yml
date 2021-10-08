@@ -171,6 +171,7 @@ jobs:
             urothis/nwnee-community-images:nasher-${{ github.event.client_payload.message.nwn_version }}-${{ steps.date.outputs.date }}
 
   nwsync-build:
+    needs: nwn-ci-base-build
     runs-on: ubuntu-latest
     steps:
       - 
