@@ -1,3 +1,5 @@
+ARG IMAGE=debian-bullseye
+ARG NWN_VERSION=dev
 FROM debian:buster-slim as builder
 ENV CC=gcc
 ENV CXX=$g++
@@ -47,6 +49,7 @@ RUN runDeps="hunspell \
   libmariadb3 \
   libpq5 \
   libsqlite3-0 \
+  libruby2.5 \
   luajit libluajit-5.1 \
   libssl1.1 \
   inotify-tools \
