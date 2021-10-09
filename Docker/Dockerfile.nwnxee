@@ -1,6 +1,7 @@
-ARG IMAGE
 ARG NWN_VERSION
+ARG IMAGE
 FROM urothis/nwnee-community-images:nwnxee-builnwnxee-builder-dev-$NWN_VERSION as nwnxeeFiles
+ARG IMAGE
 FROM $IMAGE
 RUN mkdir -p /nwn/nwnx
 # Install plugin run dependencies
