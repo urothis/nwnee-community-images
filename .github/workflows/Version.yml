@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        distro: ["debian:buster", "debian:buster-slim", "debian:bullseye", "debian:bullseye-slim", "ubuntu:focal"]
+        distro: ["debian-buster", "debian-buster-slim", "debian-bullseye", "debian-bullseye-slim", "ubuntu-focal"]
     steps:
       - 
         name: Get current date
@@ -82,29 +82,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - 
-        uses: mad9000/actions-find-and-replace-string@2
-        id: fix-version
-        with:
-            source: ${{ matrix.distro }}
-            find: ':'
-            replace: '-'   
-      - 
         name: Build and push debian buster nwnxee image
         uses: docker/build-push-action@v2
         with:
           push: true
           pull: true
-          cache-from: type=registry,ref=urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
+          cache-from: type=registry,ref=urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ matrix.distro }}
           cache-to: type=inline
           file: Docker/Dockerfile.nwnxee
           build-args: |
-            DISTRO=${{ steps.fix-version.outputs.value }}
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
             IMAGE=${{ matrix.distro }}
           tags: |
-            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
-            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${{ steps.date.outputs.date }}
-
+            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ matrix.distro }}
+            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ matrix.distro }}-${{ steps.date.outputs.date }}
 
   nwnsc-build:
     runs-on: ubuntu-latest
