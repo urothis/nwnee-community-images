@@ -1,3 +1,4 @@
+#syntax=docker/dockerfile:1.2
 ARG NWN_VERSION
 ARG IMAGE
 FROM urothis/nwnee-community-images:nwnxee-builnwnxee-builder-dev-$NWN_VERSION as nwnxeeFiles

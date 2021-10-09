@@ -1,3 +1,4 @@
+#syntax=docker/dockerfile:1.2
 ARG NWN_VERSION=dev
 FROM urothis/nwnee-community-images:ci-base-${NWN_VERSION}
 LABEL maintainer "urothis@gmail.com"
