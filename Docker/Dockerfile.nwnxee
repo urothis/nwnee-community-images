@@ -1,8 +1,6 @@
 FROM debian:buster-slim as builder
-ARG CC=gcc
-ENV CC=$CC
-ARG CXX=g++
-ENV CXX=$CXX
+ENV CC=gcc
+ENV CXX=$g++
 RUN buildDeps="build-essential \
   git \
   ssh-client \
@@ -39,9 +37,9 @@ RUN buildDeps="build-essential \
 WORKDIR /nwnx/home
 RUN git clone https://github.com/nwnxee/unified.git /nwnx/home && Scripts/buildnwnx.sh -j $(nproc)
 
-ARG IMAGE=debian-buster
+ARG DISTRO=debian-buster
 ARG NWN_VERSION=dev
-FROM urothis/nwnee-community-images:nwserver-${NWN_VERSION}-${IMAGE}
+FROM urothis/nwnee-community-images:nwserver-$NWN_VERSION-$DISTRO
 RUN mkdir -p /nwn/nwnx
 
 # Install plugin run dependencies
