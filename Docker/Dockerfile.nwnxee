@@ -1,8 +1,11 @@
 ARG IMAGE=debian-bullseye
 ARG NWN_VERSION=dev
 FROM debian:buster-slim as builder
-ENV CC=gcc
-ENV CXX=$g++
+ARG CC=gcc
+ENV CC=$CC
+ARG CXX=g++
+ENV CXX=$CXX
+WORKDIR /nwnx/home
 RUN buildDeps="build-essential \
   git \
   ssh-client \
@@ -36,7 +39,6 @@ RUN buildDeps="build-essential \
   && ./configure \
   && make \
   && make install
-WORKDIR /nwnx/home
 RUN git clone https://github.com/nwnxee/unified.git /nwnx/home && git checkout tags/build${NWN_VERSION}-HEAD && Scripts/buildnwnx.sh -j $(nproc)
 
 FROM urothis/nwnee-community-images:nwserver-$IMAGE
