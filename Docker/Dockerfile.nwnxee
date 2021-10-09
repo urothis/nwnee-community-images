@@ -39,10 +39,9 @@ RUN buildDeps="build-essential \
 WORKDIR /nwnx/home
 RUN git clone https://github.com/nwnxee/unified.git /nwnx/home && Scripts/buildnwnx.sh -j $(nproc)
 
-ARG DISTRO=debian-buster
+ARG IMAGE=debian-buster
 ARG NWN_VERSION=dev
-ARG COMMIT
-FROM urothis/nwnee-community-images:nwserver-${NWN_VERSION}-{DISTRO}
+FROM urothis/nwnee-community-images:nwserver-${NWN_VERSION}-${IMAGE}
 RUN mkdir -p /nwn/nwnx
 
 # Install plugin run dependencies
