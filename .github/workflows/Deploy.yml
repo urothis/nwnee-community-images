@@ -1,5 +1,6 @@
 name: Push Docker Images
 on:
+  workflow_dispatch:
   schedule:    
   - cron: "* 23 * * *"
 

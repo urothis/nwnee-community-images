@@ -1,9 +1,7 @@
 ARG NWN_VERSION=dev
 FROM urothis/nwnee-community-images:ci-base-${NWN_VERSION}
 LABEL maintainer "urothis@gmail.com"
-
-RUN git clone https://github.com/squattingmonk/nasher.git && cd nasher && \
-  nimble install -y && \
-  chmod +x chmod +x /root/.nimble/bin/nasher
+WORKDIR /build
 ENV PATH="/home/nasher/.nimble/bin:$PATH"
-ENTRYPOINT [ "nasher", "--help" ]
+RUN git clone https://github.com/squattingmonk/nasher.git && cd nasher && nimble build -d:release -y
+ENTRYPOINT ["/build/nasher/nasher", "--version"]
