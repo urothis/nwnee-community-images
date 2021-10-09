@@ -94,7 +94,7 @@ jobs:
 
 
   nwnxee-build:
-    needs: nwserver-build
+    needs: [ nwnxee-builder-build, nwserver-build ]
     strategy:
       matrix:
         distro: ["debian:buster", "debian:buster-slim", "debian:bullseye", "debian:bullseye-slim", "ubuntu:focal"]
