@@ -1,49 +1,7 @@
-FROM debian:buster-slim as builder
-ARG IMAGE=debian-bullseye
-ARG NWN_VERSION=dev
-ARG CC=gcc
-ENV CC=$CC
-ARG CXX=g++
-ENV CXX=$CXX
-
-WORKDIR /nwnx/home
-RUN buildDeps="build-essential \
-  git \
-  ssh-client \
-  zip \
-  cmake \
-  gperf \
-  gcc-7 \
-  g++-7 \
-  default-libmysqlclient-dev \
-  libpq-dev \
-  libsqlite3-dev \
-  libseccomp-dev \
-  ruby-dev \
-  libssl-dev \
-  libhunspell-dev \
-  pkg-config \
-  libluajit-5.1-dev \
-  libpcre3 \
-  libpcre3-dev \
-  autoconf \
-  automake \
-  bison \
-  ccache" \
-  && apt-get update \
-  && apt-get install -y --no-install-recommends $buildDeps \
-  && apt-get clean \
-  && rm -r /var/lib/apt/lists /var/cache/apt \
-  && git clone https://github.com/nwnxee/unified.git /nwnx/home && git checkout tags/build$NWN_VERSION-HEAD \
-  && git clone --branch v4.0.2 --depth 1 https://github.com/swig/swig.git \
-  && cd swig \
-  && ./autogen.sh \
-  && ./configure \
-  && make \
-  && make install
-RUN Scripts/buildnwnx.sh -j $(nproc)
-
-FROM urothis/nwnee-community-images:nwserver-$IMAGE
+ARG NWN_VERSION
+FROM urothis/nwnee-community-images:nwnxee-builnwnxee-builder-dev-$NWN_VERSION as nwnxeeFiles
+ARG IMAGE
+FROM $IMAGE
 RUN mkdir -p /nwn/nwnx
 
 # Install plugin run dependencies
@@ -70,8 +28,8 @@ RUN runDeps="hunspell \
   && ln -s /usr/lib/x86_64-linux-gnu/libhunspell-?.*.so /usr/lib/x86_64-linux-gnu/libhunspell.so \
   && rm -rf /var/cache/apt /var/lib/apt/lists/*
 
-COPY --from=builder /nwnx/home/Binaries/ /nwn/nwnx/
-COPY --from=builder /nwnx/home/Scripts/Docker/run-server.patch /nwn
+COPY --from=nwnxeeFiles /nwnx/home/Binaries/ /nwn/nwnx/
+COPY --from=nwnxeeFiles /nwnx/home/Scripts/Docker/run-server.patch /nwn
 RUN patch /nwn/run-server.sh < /nwn/run-server.patch
 
 # Configure nwserver to run with nwnx
