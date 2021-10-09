@@ -34,7 +34,7 @@ RUN buildDeps="build-essential \
   && apt-get install -y --no-install-recommends $buildDeps \
   && apt-get clean \
   && rm -r /var/lib/apt/lists /var/cache/apt \
-  && git clone https://github.com/nwnxee/unified.git /nwnx/home && git fetch && git checkout tags/build${NWN_VERSION}-HEAD \
+  && git clone https://github.com/nwnxee/unified.git /nwnx/home && git fetch && git checkout tags/build$NWN_VERSION-HEAD \
   && git clone --branch v4.0.2 --depth 1 https://github.com/swig/swig.git \
   && cd swig \
   && ./autogen.sh \
