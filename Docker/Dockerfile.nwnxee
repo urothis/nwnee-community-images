@@ -1,0 +1,88 @@
+FROM debian:buster-slim as builder
+ARG CC=gcc
+ENV CC=$CC
+ARG CXX=g++
+ENV CXX=$CXX
+RUN buildDeps="build-essential \
+  git \
+  ssh-client \
+  zip \
+  cmake \
+  gperf \
+  gcc-7 \
+  g++-7 \
+  default-libmysqlclient-dev \
+  libpq-dev \
+  libsqlite3-dev \
+  libseccomp-dev \
+  ruby-dev \
+  libssl-dev \
+  libhunspell-dev \
+  pkg-config \
+  libluajit-5.1-dev \
+  libpcre3 \
+  libpcre3-dev \
+  autoconf \
+  automake \
+  bison \
+  ccache" \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends $buildDeps \
+  && apt-get clean \
+  && rm -r /var/lib/apt/lists /var/cache/apt \
+  && git clone --branch v4.0.2 --depth 1 https://github.com/swig/swig.git \
+  && cd swig \
+  && ./autogen.sh \
+  && ./configure \
+  && make \
+  && make install
+WORKDIR /nwnx/home
+RUN git clone https://github.com/nwnxee/unified.git /nwnx/home && Scripts/buildnwnx.sh -j $(nproc)
+
+ARG DISTRO=debian-buster
+ARG NWN_VERSION=dev
+ARG COMMIT
+FROM urothis/nwnee-community-images:nwserver-${NWN_VERSION}-{DISTRO}
+RUN mkdir -p /nwn/nwnx
+
+# Install plugin run dependencies
+RUN runDeps="hunspell \
+  default-libmysqlclient-dev \
+  git \
+  libmariadb3 \
+  libpq5 \
+  libsqlite3-0 \
+  libruby2.5 \
+  luajit libluajit-5.1 \
+  libssl1.1 \
+  inotify-tools \
+  patch \
+  unzip \
+  dotnet-runtime-5.0 \
+  dotnet-apphost-pack-5.0" \
+  installDeps="ca-certificates wget" \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends $installDeps \
+  && wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
+  && dpkg -i packages-microsoft-prod.deb \
+  && apt-get update \
+  && apt-get -y install --no-install-recommends $runDeps \
+  && ln -s /usr/lib/x86_64-linux-gnu/libhunspell-?.*.so /usr/lib/x86_64-linux-gnu/libhunspell.so \
+  && rm -rf /var/cache/apt /var/lib/apt/lists/*
+
+RUN git clone https://github.com/nwnxee/unified.git /nwnx && cd /nwnx && git checkout tags/build${NWN_VERSION}-HEAD && \
+  cp /nwnx/Scripts/Docker/run-server.patch /nwn && \
+  patch /nwn/run-server.sh < /nwn/run-server.patch
+
+COPY --from=builder /nwnx/home/Binaries/ /nwn/nwnx/
+
+# Configure nwserver to run with nwnx
+ENV NWNX_CORE_LOAD_PATH=/nwn/nwnx/
+ENV NWN_LD_PRELOAD="/nwn/nwnx/NWNX_Core.so"
+# Use NWNX_ServerLogRedirector as default log manager
+ENV NWNX_SERVERLOGREDIRECTOR_SKIP=n \
+  NWN_TAIL_LOGS=n \
+  NWNX_CORE_LOG_LEVEL=6 \
+  NWNX_SERVERLOGREDIRECTOR_LOG_LEVEL=6
+# Disable all other plugins by default.
+ENV NWNX_CORE_SKIP_ALL=y
