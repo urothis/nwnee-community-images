@@ -91,6 +91,7 @@ jobs:
           cache-to: type=inline
           file: Docker/Dockerfile.nwnxee
           build-args: |
+            NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
             IMAGE=${{ github.event.client_payload.message.nwn_version }}-${{ matrix.distro }}
           tags: |
             urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ matrix.distro }}

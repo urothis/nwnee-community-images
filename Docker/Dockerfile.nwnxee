@@ -1,3 +1,4 @@
+ARG IMAGE
 FROM debian:buster-slim as builder
 ENV CC=gcc
 ENV CXX=$g++
@@ -35,9 +36,8 @@ RUN buildDeps="build-essential \
   && make \
   && make install
 WORKDIR /nwnx/home
-RUN git clone https://github.com/nwnxee/unified.git /nwnx/home && Scripts/buildnwnx.sh -j $(nproc)
+RUN git clone https://github.com/nwnxee/unified.git /nwnx/home && git checkout tags/build${NWN_VERSION}-HEAD && Scripts/buildnwnx.sh -j $(nproc)
 
-ARG IMAGE
 FROM urothis/nwnee-community-images:nwserver-$IMAGE
 RUN mkdir -p /nwn/nwnx
 
@@ -66,11 +66,9 @@ RUN runDeps="hunspell \
   && ln -s /usr/lib/x86_64-linux-gnu/libhunspell-?.*.so /usr/lib/x86_64-linux-gnu/libhunspell.so \
   && rm -rf /var/cache/apt /var/lib/apt/lists/*
 
-RUN git clone https://github.com/nwnxee/unified.git /nwnx && cd /nwnx && git checkout tags/build${NWN_VERSION}-HEAD && \
-  cp /nwnx/Scripts/Docker/run-server.patch /nwn && \
-  patch /nwn/run-server.sh < /nwn/run-server.patch
-
 COPY --from=builder /nwnx/home/Binaries/ /nwn/nwnx/
+COPY --from=builder /nwnx/home/Scripts/Docker/run-server.patch /nwn
+RUN patch /nwn/run-server.sh < /nwn/run-server.patch
 
 # Configure nwserver to run with nwnx
 ENV NWNX_CORE_LOAD_PATH=/nwn/nwnx/
