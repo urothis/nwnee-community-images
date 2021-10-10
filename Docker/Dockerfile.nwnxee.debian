@@ -1,0 +1,39 @@
+#syntax=docker/dockerfile:1.3
+ARG IMAGE
+ARG NWN_VERSION
+FROM urothis/nwnee-community-images:nwserver-${NWN_VERSION}-${IMAGE}
+ARG NWN_VERSION
+ENV DEBIAN_FRONTEND=noninteractive \
+  NWNX_CORE_LOAD_PATH=/nwn/nwnx/ \
+  NWN_LD_PRELOAD="/nwn/nwnx/NWNX_Core.so" \
+  NWNX_SERVERLOGREDIRECTOR_SKIP=n \
+  NWN_TAIL_LOGS=n \
+  NWNX_CORE_LOG_LEVEL=6 \
+  NWNX_SERVERLOGREDIRECTOR_LOG_LEVEL=6 \
+  NWNX_CORE_SKIP_ALL=y
+RUN runDeps="hunspell \
+  default-libmysqlclient-dev \
+  git \
+  libmariadb3 \
+  libpq5 \
+  libsqlite3-0 \
+  luajit libluajit-5.1 \
+  libssl1.1 \
+  inotify-tools \
+  patch \
+  unzip \
+  dotnet-runtime-5.0 \
+  dotnet-apphost-pack-5.0" \
+  installDeps="ca-certificates wget" \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends $installDeps \
+  && wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
+  && dpkg -i packages-microsoft-prod.deb \
+  && apt-get update \
+  && apt-get -y install --no-install-recommends $runDeps \
+  && ln -s /usr/lib/x86_64-linux-gnu/libhunspell-?.*.so /usr/lib/x86_64-linux-gnu/libhunspell.so \
+  && rm -rf /var/cache/apt /var/lib/apt/lists/* \
+  && wget https://github.com/nwnxee/unified/releases/download/build$NWN_VERSION-HEAD/NWNX-EE.zip -P /tmp/nwnx/ \
+  && unzip /tmp/nwnx/NWNX-EE.zip -d /nwn/nwnx/ \
+  && rm -r /tmp/ \
+  && wget https://raw.githubusercontent.com/nwnxee/unified/build$NWN_VERSION/Scripts/Docker/run-server.sh.new -O /nwn/run-server.sh

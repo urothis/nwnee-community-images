@@ -54,11 +54,11 @@ jobs:
             urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
             urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${{ steps.date.outputs.date }}
 
-  nwnxee-build:
+  nwnxee-debian-build:
     needs: nwserver-build
     strategy:
       matrix:
-        distro: ["debian:buster", "debian:buster-slim", "debian:bullseye", "debian:bullseye-slim", "ubuntu:focal"]
+        distro: ["debian:buster-slim", "debian:bullseye-slim"]
     runs-on: ubuntu-latest
     steps:
       - 
@@ -96,7 +96,7 @@ jobs:
           pull: true
           cache-from: type=registry,ref=urothis/nwnee-community-images:nwnxee${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
           cache-to: type=inline
-          file: Docker/Dockerfile.nwnxee
+          file: Docker/Dockerfile.nwnxee.debian
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
             IMAGE=${{ steps.fix-version.outputs.value }}
@@ -104,11 +104,11 @@ jobs:
             urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
             urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${{ steps.date.outputs.date }}
 
-  nwnxee-slim-build:
+  nwnxee-debian-slim-build:
     needs: nwserver-build
     strategy:
       matrix:
-        distro: ["debian:buster", "debian:buster-slim", "debian:bullseye", "debian:bullseye-slim", "ubuntu:focal"]
+        distro: ["debian:buster-slim", "debian:bullseye-slim"]
     runs-on: ubuntu-latest
     steps:
       - 
@@ -146,7 +146,7 @@ jobs:
           pull: true
           cache-from: type=registry,ref=urothis/nwnee-community-images:nwnxee-slim-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
           cache-to: type=inline
-          file: Docker/Dockerfile.nwnxee-slim
+          file: Docker/Dockerfile.nwnxee-slim.debian
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
             IMAGE=${{ steps.fix-version.outputs.value }}
@@ -154,6 +154,105 @@ jobs:
             urothis/nwnee-community-images:nwnxee-slim-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
             urothis/nwnee-community-images:nwnxee-slim-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${{ steps.date.outputs.date }}
 
+  nwnxee-ubuntu-build:
+    needs: nwserver-build
+    strategy:
+      matrix:
+        distro: ["ubuntu:focal","ubuntu:impish"]
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d')"
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      - 
+        name: Login to Dockerhub Container Registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - 
+        uses: mad9000/actions-find-and-replace-string@2
+        id: fix-version
+        with:
+            source: ${{ matrix.distro }}
+            find: ':'
+            replace: '-' 
+      - 
+        name: Build and push debian buster nwnxee image
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          pull: true
+          cache-from: type=registry,ref=urothis/nwnee-community-images:nwnxee${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
+          cache-to: type=inline
+          file: Docker/Dockerfile.nwnxee.ubuntu
+          build-args: |
+            NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
+            IMAGE=${{ steps.fix-version.outputs.value }}
+          tags: |
+            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
+            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${{ steps.date.outputs.date }}
+
+  nwnxee-ubuntu-slim-build:
+    needs: nwserver-build
+    strategy:
+      matrix:
+        distro: ["ubuntu:focal","ubuntu:impish"]
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d')"
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      - 
+        name: Login to Dockerhub Container Registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - 
+        uses: mad9000/actions-find-and-replace-string@2
+        id: fix-version
+        with:
+            source: ${{ matrix.distro }}
+            find: ':'
+            replace: '-' 
+      - 
+        name: Build and push debian buster nwnxee image
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          pull: true
+          cache-from: type=registry,ref=urothis/nwnee-community-images:nwnxee-slim-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
+          cache-to: type=inline
+          file: Docker/Dockerfile.nwnxee-slim.ubuntu
+          build-args: |
+            NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
+            IMAGE=${{ steps.fix-version.outputs.value }}
+          tags: |
+            urothis/nwnee-community-images:nwnxee-slim-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
+            urothis/nwnee-community-images:nwnxee-slim-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${{ steps.date.outputs.date }}            
 
   nwnsc-build:
     runs-on: ubuntu-latest

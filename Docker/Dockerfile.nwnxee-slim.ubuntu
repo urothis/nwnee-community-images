@@ -44,4 +44,3 @@ RUN runDeps="hunspell \
   && cp /tmp/nwnx/NWNX_SWIG_DotNET.so /nwn/nwnx/NWNX_SWIG_DotNET.so \
   && rm -r /tmp/ \
   && wget https://raw.githubusercontent.com/nwnxee/unified/build$NWN_VERSION/Scripts/Docker/run-server.sh.new -O /nwn/run-server.sh
-
