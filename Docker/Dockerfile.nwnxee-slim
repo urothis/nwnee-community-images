@@ -2,7 +2,7 @@
 ARG IMAGE
 ARG NWN_VERSION
 FROM urothis/nwnee-community-images:nwserver-${NWN_VERSION}-${IMAGE}
-
+ENV DEBIAN_FRONTEND=noninteractive
 RUN mkdir -p /nwn/nwnx
 ENV TZ=America/New_York
 # Install plugin run dependencies
@@ -16,6 +16,7 @@ RUN runDeps="hunspell \
   libssl1.1 \
   inotify-tools \
   patch \
+  tsdata \
   unzip \
   dotnet-runtime-5.0 \
   dotnet-apphost-pack-5.0" \
