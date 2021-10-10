@@ -2,10 +2,16 @@
 ARG IMAGE
 ARG NWN_VERSION
 FROM urothis/nwnee-community-images:nwserver-${NWN_VERSION}-${IMAGE}
-ENV DEBIAN_FRONTEND=noninteractive
-RUN mkdir -p /nwn/nwnx
-ENV TZ=America/New_York
-# Install plugin run dependencies
+ARG NWN_VERSION
+ENV DEBIAN_FRONTEND=noninteractive \
+  NWNX_CORE_LOAD_PATH=/nwn/nwnx/ \
+  NWN_LD_PRELOAD="/nwn/nwnx/NWNX_Core.so" \
+  NWNX_SERVERLOGREDIRECTOR_SKIP=n \
+  NWN_TAIL_LOGS=n \
+  NWNX_CORE_LOG_LEVEL=6 \
+  NWNX_SERVERLOGREDIRECTOR_LOG_LEVEL=6 \
+  NWNX_CORE_SKIP_ALL=y \
+  TZ=America/New_York
 RUN runDeps="hunspell \
   default-libmysqlclient-dev \
   git \
@@ -28,18 +34,8 @@ RUN runDeps="hunspell \
   && apt-get update \
   && apt-get -y install --no-install-recommends $runDeps \
   && ln -s /usr/lib/x86_64-linux-gnu/libhunspell-?.*.so /usr/lib/x86_64-linux-gnu/libhunspell.so \
-  && rm -rf /var/cache/apt /var/lib/apt/lists/*
-ARG NWN_VERSION
-ADD https://github.com/nwnxee/unified/releases/download/build$NWN_VERSION-HEAD/NWNX-EE.zip /tmp/nwnx/
-RUN unzip /tmp/nwnx/NWNX-EE.zip -d /nwn/nwnx/ && \ 
-  rm /tmp/nwnx/NWNX-EE.zip && \
-  wget https://raw.githubusercontent.com/nwnxee/unified/build$NWN_VERSION/Scripts/Docker/run-server.sh.new -O /nwn/run-server.sh
-# Configure nwserver to run with nwnx
-ENV NWNX_CORE_LOAD_PATH=/nwn/nwnx/ \
-  NWN_LD_PRELOAD="/nwn/nwnx/NWNX_Core.so" \
-  NWNX_SERVERLOGREDIRECTOR_SKIP=n \
-  NWN_TAIL_LOGS=n \
-  NWNX_CORE_LOG_LEVEL=6 \
-  NWNX_SERVERLOGREDIRECTOR_LOG_LEVEL=6 \
-  # Disable all other plugins by default.
-  NWNX_CORE_SKIP_ALL=y
+  && rm -rf /var/cache/apt /var/lib/apt/lists/* \
+  && wget https://github.com/nwnxee/unified/releases/download/build$NWN_VERSION-HEAD/NWNX-EE.zip -P /tmp/nwnx/ \
+  && unzip /tmp/nwnx/NWNX-EE.zip -d /nwn/nwnx/ \
+  && rm -r /tmp/ \
+  && wget https://raw.githubusercontent.com/nwnxee/unified/build$NWN_VERSION/Scripts/Docker/run-server.sh.new -O /nwn/run-server.sh
