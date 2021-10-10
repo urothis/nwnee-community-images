@@ -4,6 +4,7 @@ ARG NWN_VERSION
 FROM urothis/nwnee-community-images:nwserver-${NWN_VERSION}-${IMAGE}
 
 RUN mkdir -p /nwn/nwnx
+ENV TZ=America/New_York
 # Install plugin run dependencies
 RUN runDeps="hunspell \
   default-libmysqlclient-dev \
