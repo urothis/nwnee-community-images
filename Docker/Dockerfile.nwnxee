@@ -16,6 +16,7 @@ RUN runDeps="hunspell \
   libssl1.1 \
   inotify-tools \
   patch \
+  tzdata \
   unzip \
   dotnet-runtime-5.0 \
   dotnet-apphost-pack-5.0" \
