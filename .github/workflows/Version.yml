@@ -54,47 +54,8 @@ jobs:
             urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
             urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${{ steps.date.outputs.date }}
 
-  nwnxee-builder-build:
-    runs-on: ubuntu-latest
-    steps:
-      - 
-        name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
-      -
-        name: Checkout
-        uses: actions/checkout@v2
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
-      - 
-        name: Login to Dockerhub Container Registry
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - 
-        name: Build and push debian buster nwnxee image
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          pull: true
-          cache-from: type=registry,ref=urothis/nwnee-community-images:nwnxee-builder${{ github.event.client_payload.message.nwn_version }}-${{ matrix.distro }}
-          cache-to: type=inline
-          file: Docker/Dockerfile.nwnxee-builder
-          build-args: |
-            NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
-          tags: |
-            urothis/nwnee-community-images:nwnxee-builder-${{ github.event.client_payload.message.nwn_version }}
-            urothis/nwnee-community-images:nwnxee-builder-${{ github.event.client_payload.message.nwn_version }}-${{ steps.date.outputs.date }}
-
-
   nwnxee-build:
-    needs: [ nwnxee-builder-build, nwserver-build ]
+    needs: nwserver-build
     strategy:
       matrix:
         distro: ["debian:buster", "debian:buster-slim", "debian:bullseye", "debian:bullseye-slim", "ubuntu:focal"]
@@ -129,6 +90,49 @@ jobs:
           cache-from: type=registry,ref=urothis/nwnee-community-images:nwnxee${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
           cache-to: type=inline
           file: Docker/Dockerfile.nwnxee
+          build-args: |
+            NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
+            IMAGE=${{ matrix.distro }}
+          tags: |
+            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
+            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${{ steps.date.outputs.date }}
+
+  nwnxee-slim-build:
+    needs: nwserver-build
+    strategy:
+      matrix:
+        distro: ["debian:buster", "debian:buster-slim", "debian:bullseye", "debian:bullseye-slim", "ubuntu:focal"]
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d')"
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      - 
+        name: Login to Dockerhub Container Registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - 
+        name: Build and push debian buster nwnxee image
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          pull: true
+          cache-from: type=registry,ref=urothis/nwnee-community-images:nwnxee${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
+          cache-to: type=inline
+          file: Docker/Dockerfile.nwnxee-slim
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
             IMAGE=${{ matrix.distro }}

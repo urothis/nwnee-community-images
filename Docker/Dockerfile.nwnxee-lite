@@ -29,8 +29,10 @@ RUN runDeps="hunspell \
   && rm -rf /var/cache/apt /var/lib/apt/lists/*
 ARG NWN_VERSION
 ADD https://github.com/nwnxee/unified/releases/download/build$NWN_VERSION-HEAD/NWNX-EE.zip /tmp/nwnx/
-RUN unzip /tmp/nwnx/NWNX-EE.zip -d /nwn/nwnx/ && \ 
-  rm /tmp/nwnx/NWNX-EE.zip && \
+RUN unzip /tmp/nwnx/NWNX-EE.zip -d /tmp/nwnx/ && \
+  cp /tmp/nwnx/NWNX_Core.so /nwn/nwnx/NWNX_Core.so && \
+  cp /tmp/nwnx/NWNX_DotNET.so /nwn/nwnx/NWNX_DotNET.so && \
+  cp /tmp/nwnx/NWNX_SWIG_DotNET.so /nwn/nwnx/NWNX_SWIG_DotNET.so && \
   wget https://raw.githubusercontent.com/nwnxee/unified/build$NWN_VERSION/Scripts/Docker/run-server.sh.new -O /nwn/run-server.sh
 # Configure nwserver to run with nwnx
 ENV NWNX_CORE_LOAD_PATH=/nwn/nwnx/ \
