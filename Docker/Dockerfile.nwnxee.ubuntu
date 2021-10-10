@@ -14,7 +14,6 @@ ENV DEBIAN_FRONTEND=noninteractive \
   TZ=America/New_York
 RUN runDeps="hunspell \
   default-libmysqlclient-dev \
-  git \
   libmariadb3 \
   libpq5 \
   libsqlite3-0 \
