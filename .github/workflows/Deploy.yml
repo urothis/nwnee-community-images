@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        nwn_version: ["8193.29", "8193.30", "8193.32", "8193.33"]
+        nwn_version: ["8193.29", "8193.30", "8193.32", "8193.33", "8193.34"]
     steps:
       - name: Emit repository_dispatch
         uses: mvasigh/dispatch-action@main
