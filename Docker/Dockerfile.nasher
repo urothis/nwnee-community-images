@@ -5,4 +5,5 @@ LABEL maintainer "urothis@gmail.com"
 WORKDIR /build
 ENV PATH="/home/nasher/.nimble/bin:$PATH"
 RUN git clone https://github.com/squattingmonk/nasher.git && cd nasher && nimble build -d:release -y
-ENTRYPOINT ["/build/nasher/nasher", "--version"]
+ENTRYPOINT ["/build/nasher/nasher"]
+CMD ["--version"]
