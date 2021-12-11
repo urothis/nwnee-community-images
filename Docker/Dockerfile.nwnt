@@ -5,4 +5,5 @@ LABEL maintainer "urothis@gmail.com"
 WORKDIR /build
 ENV PATH="/home/NWNT/.nimble/bin:$PATH"
 RUN git clone https://github.com/WilliamDraco/NWNT.git && cd NWNT && nimble build -d:release -y
-ENTRYPOINT ["/build/NWNT/nwn_nwnt", "--version"]
+ENTRYPOINT ["/build/NWNT/nwn_nwnt"]
+CMD ["--version"]
