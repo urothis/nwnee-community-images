@@ -52,7 +52,6 @@ jobs:
             IMAGE=${{ matrix.distro }}
           tags: |
             urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
-            urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${{ steps.date.outputs.date }}
 
   nwnxee-debian-build:
     needs: nwserver-build
@@ -102,7 +101,6 @@ jobs:
             IMAGE=${{ steps.fix-version.outputs.value }}
           tags: |
             urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
-            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${{ steps.date.outputs.date }}
 
   nwnxee-debian-slim-build:
     needs: nwserver-build
@@ -152,7 +150,6 @@ jobs:
             IMAGE=${{ steps.fix-version.outputs.value }}
           tags: |
             urothis/nwnee-community-images:nwnxee-slim-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
-            urothis/nwnee-community-images:nwnxee-slim-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${{ steps.date.outputs.date }}
 
   nwnxee-ubuntu-build:
     needs: nwserver-build
@@ -202,7 +199,6 @@ jobs:
             IMAGE=${{ steps.fix-version.outputs.value }}
           tags: |
             urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
-            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${{ steps.date.outputs.date }}
 
   nwnxee-ubuntu-slim-build:
     needs: nwserver-build
@@ -252,7 +248,6 @@ jobs:
             IMAGE=${{ steps.fix-version.outputs.value }}
           tags: |
             urothis/nwnee-community-images:nwnxee-slim-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
-            urothis/nwnee-community-images:nwnxee-slim-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${{ steps.date.outputs.date }}            
 
   nwnsc-build:
     runs-on: ubuntu-latest
@@ -290,8 +285,6 @@ jobs:
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
           tags: |
             urothis/nwnee-community-images:nwnsc-${{ github.event.client_payload.message.nwn_version }}
-            urothis/nwnee-community-images:nwnsc-${{ github.event.client_payload.message.nwn_version }}-${{ steps.date.outputs.date }}
-
 
   nwn-ci-base-build:
     needs: nwnsc-build
@@ -329,7 +322,6 @@ jobs:
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
           tags: |
             urothis/nwnee-community-images:ci-base-${{ github.event.client_payload.message.nwn_version }}
-            urothis/nwnee-community-images:ci-base-${{ github.event.client_payload.message.nwn_version }}-${{ steps.date.outputs.date }}
 
   nasher-build:
     needs: nwn-ci-base-build
@@ -368,7 +360,6 @@ jobs:
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
           tags: |
             urothis/nwnee-community-images:nasher-${{ github.event.client_payload.message.nwn_version }}
-            urothis/nwnee-community-images:nasher-${{ github.event.client_payload.message.nwn_version }}-${{ steps.date.outputs.date }}
 
   nwsync-build:
     needs: nwn-ci-base-build
@@ -407,7 +398,6 @@ jobs:
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
           tags: |
             urothis/nwnee-community-images:nwsync-${{ github.event.client_payload.message.nwn_version }}
-            urothis/nwnee-community-images:nwsync-${{ github.event.client_payload.message.nwn_version }}-${{ steps.date.outputs.date }}
 
   nwnt-build:
     needs: nwn-ci-base-build
@@ -446,7 +436,6 @@ jobs:
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
           tags: |
             urothis/nwnee-community-images:nwnt-${{ github.event.client_payload.message.nwn_version }}
-            urothis/nwnee-community-images:nwnt-${{ github.event.client_payload.message.nwn_version }}-${{ steps.date.outputs.date }}
 
   nwsync_originate-build:
     needs: nwn-ci-base-build
@@ -485,4 +474,3 @@ jobs:
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
           tags: |
             urothis/nwnee-community-images:nwsync-originate-${{ github.event.client_payload.message.nwn_version }}
-            urothis/nwnee-community-images:nwsync-originate-${{ github.event.client_payload.message.nwn_version }}-${{ steps.date.outputs.date }}
