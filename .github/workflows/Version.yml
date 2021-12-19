@@ -83,7 +83,7 @@ jobs:
         name: Shorten distro
         id: shorten-distro
         run: |
-          echo "::set-output name=value::$(echo "${{ steps.fix-version.outputs.value }}" | cut -f1,2 -d'-')"
+          echo "::set-output name=value::$(echo "${{ steps.fix-version.outputs.value }}" | cut -f1,2 -d'-')::-1"
       -
         name: Get NWNX Commit hash
         id: nwnxee_commit
