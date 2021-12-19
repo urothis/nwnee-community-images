@@ -92,6 +92,13 @@ jobs:
           unzip /tmp/nwnx/NWNX-EE.zip -d . &&
           echo "::set-output name=value::$(find -iname "*.txt" -exec sh -c 'for f do basename -- "$f" .txt;done' sh {} +)"
       -
+        uses: mad9000/actions-find-and-replace-string@2
+        id: fix-image-version
+        with:
+            source: ${{ matrix.distro }}
+            find: ':'
+            replace: '-'
+      -
         name: Build and push debian buster nwnxee image
         uses: docker/build-push-action@v2
         with:
@@ -102,7 +109,7 @@ jobs:
           file: src/nwnxee/Dockerfile.debian
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
-            IMAGE=${{ steps.fix-version.outputs.value }}
+            IMAGE=${{ steps.fix-image-version.outputs.value }}
           tags: |
             urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.version_fix }}${{ steps.fix-version.outputs.value }}
             urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.version_fix }}${{ steps.fix-version.outputs.value }}-${{steps.nwnxee_commit.outputs.value}}
