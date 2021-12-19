@@ -73,22 +73,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
-        uses: mad9000/actions-find-and-replace-string@2
-        id: fix-version
-        with:
-            source: ${{ matrix.distro }}
-            find: ':'
-            replace: '-'
-      -
         name: Shorten distro
         id: shorten-distro
         run: |
-          echo "::set-output name=value::$(echo "${{ steps.fix-version.outputs.value }}" | cut -f1,2 -d'-')"
+          echo "::set-output name=value::$(echo "${{ matrix.distro }}" | cut -f1,1 -d'-')"
       -
-        name: Remove Extra Dash
-        id: remove-dash
-        run: |
-          echo "::set-output name=value::${${{ steps.shorten-distro.outputs.value }}::-1}"
+        uses: mad9000/actions-find-and-replace-string@2
+        id: fix-version
+        with:
+            source: ${{ steps.fix-version.outputs.value }}
+            find: ':'
+            replace: '-'
       -
         name: Get NWNX Commit hash
         id: nwnxee_commit
@@ -96,7 +91,6 @@ jobs:
           wget https://github.com/nwnxee/unified/releases/download/build${{ github.event.client_payload.message.nwn_version }}-HEAD/NWNX-EE.zip -P /tmp/nwnx/ &&
           unzip /tmp/nwnx/NWNX-EE.zip -d . &&
           echo "::set-output name=value::$(find -iname "*.txt" -exec sh -c 'for f do basename -- "$f" .txt;done' sh {} +)"
-
       -
         name: Build and push debian buster nwnxee image
         uses: docker/build-push-action@v2
@@ -110,8 +104,8 @@ jobs:
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
             IMAGE=${{ steps.fix-version.outputs.value }}
           tags: |
-            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.version_fix }}-${{ steps.remove-dash.outputs.value }}
-            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.version_fix }}-${{ steps.remove-dash.outputs.value }}-${{steps.nwnxee_commit.outputs.value}}
+            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.version_fix }}-${{ steps.shorten-distro.outputs.value }}
+            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.version_fix }}-${{ steps.shorten-distro.outputs.value }}-${{steps.nwnxee_commit.outputs.value}}
 
   nwnxee-debian-slim-build:
     needs: nwserver-build
