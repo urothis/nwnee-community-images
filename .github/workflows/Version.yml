@@ -88,7 +88,7 @@ jobs:
         name: Remove Extra Dash
         id: remove-dash
         run: |
-          echo "::set-output name=value::${${{ steps.shorten-distro.outputs.value }}:-1}"
+          echo "::set-output name=value::${${{ steps.shorten-distro.outputs.value }}::-1}"
       -
         name: Get NWNX Commit hash
         id: nwnxee_commit
@@ -99,8 +99,6 @@ jobs:
 
       -
         name: Build and push debian buster nwnxee image
-        env:
-          key: value
         uses: docker/build-push-action@v2
         with:
           push: true
