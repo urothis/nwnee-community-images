@@ -1,4 +1,3 @@
-#syntax=docker/dockerfile:1.3
 ARG NWN_VERSION
 ARG IMAGE
 FROM beamdog/nwserver:$NWN_VERSION AS nwn

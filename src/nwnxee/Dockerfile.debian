@@ -1,4 +1,3 @@
-#syntax=docker/dockerfile:1.3
 ARG IMAGE
 ARG NWN_VERSION
 FROM urothis/nwnee-community-images:nwserver-${NWN_VERSION}-${IMAGE}

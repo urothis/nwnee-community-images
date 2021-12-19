@@ -1,4 +1,3 @@
-#syntax=docker/dockerfile:1.3
 ARG NWN_VERSION
 FROM urothis/nwnee-community-images:ci-base-${NWN_VERSION}
 WORKDIR /build

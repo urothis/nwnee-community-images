@@ -11,7 +11,7 @@ jobs:
       matrix:
         distro: ["debian:buster-slim", "debian:bullseye-slim", "ubuntu:focal", "ubuntu:impish"]
     steps:
-      - 
+      -
         name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
@@ -25,20 +25,20 @@ jobs:
         name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      - 
+      -
         name: Login to Dockerhub Container Registry
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - 
+      -
         uses: mad9000/actions-find-and-replace-string@2
         id: fix-version
         with:
             source: ${{ matrix.distro }}
             find: ':'
-            replace: '-'   
-      - 
+            replace: '-'
+      -
         name: Build and push debian buster nwserver image
         uses: docker/build-push-action@v2
         with:
@@ -46,7 +46,7 @@ jobs:
           pull: true
           cache-from: type=registry,ref=urothis/nwnee-community-images:nwserver-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
           cache-to: type=inline
-          file: Docker/Dockerfile.nwserver
+          file: src/nwserver/Dockerfile
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
             IMAGE=${{ matrix.distro }}
@@ -60,7 +60,7 @@ jobs:
         distro: ["debian:buster-slim", "debian:bullseye-slim"]
     runs-on: ubuntu-latest
     steps:
-      - 
+      -
         name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
@@ -74,20 +74,20 @@ jobs:
         name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      - 
+      -
         name: Login to Dockerhub Container Registry
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - 
+      -
         uses: mad9000/actions-find-and-replace-string@2
         id: fix-version
         with:
             source: ${{ matrix.distro }}
             find: ':'
-            replace: '-' 
-      - 
+            replace: '-'
+      -
         name: Build and push debian buster nwnxee image
         uses: docker/build-push-action@v2
         with:
@@ -95,7 +95,7 @@ jobs:
           pull: true
           cache-from: type=registry,ref=urothis/nwnee-community-images:nwnxee${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
           cache-to: type=inline
-          file: Docker/Dockerfile.nwnxee.debian
+          file: src/nwnxee/Dockerfile.debian
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
             IMAGE=${{ steps.fix-version.outputs.value }}
@@ -109,7 +109,7 @@ jobs:
         distro: ["debian:buster-slim", "debian:bullseye-slim"]
     runs-on: ubuntu-latest
     steps:
-      - 
+      -
         name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
@@ -123,20 +123,20 @@ jobs:
         name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      - 
+      -
         name: Login to Dockerhub Container Registry
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - 
+      -
         uses: mad9000/actions-find-and-replace-string@2
         id: fix-version
         with:
             source: ${{ matrix.distro }}
             find: ':'
-            replace: '-' 
-      - 
+            replace: '-'
+      -
         name: Build and push debian buster nwnxee image
         uses: docker/build-push-action@v2
         with:
@@ -144,7 +144,7 @@ jobs:
           pull: true
           cache-from: type=registry,ref=urothis/nwnee-community-images:nwnxee-slim-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
           cache-to: type=inline
-          file: Docker/Dockerfile.nwnxee-slim.debian
+          file: src/nwnxee/Dockerfile.debian.slim
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
             IMAGE=${{ steps.fix-version.outputs.value }}
@@ -158,7 +158,7 @@ jobs:
         distro: ["ubuntu:focal","ubuntu:impish"]
     runs-on: ubuntu-latest
     steps:
-      - 
+      -
         name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
@@ -172,20 +172,20 @@ jobs:
         name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      - 
+      -
         name: Login to Dockerhub Container Registry
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - 
+      -
         uses: mad9000/actions-find-and-replace-string@2
         id: fix-version
         with:
             source: ${{ matrix.distro }}
             find: ':'
-            replace: '-' 
-      - 
+            replace: '-'
+      -
         name: Build and push debian buster nwnxee image
         uses: docker/build-push-action@v2
         with:
@@ -193,7 +193,7 @@ jobs:
           pull: true
           cache-from: type=registry,ref=urothis/nwnee-community-images:nwnxee${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
           cache-to: type=inline
-          file: Docker/Dockerfile.nwnxee.ubuntu
+          file: src/nwnxee/Dockerfile.ubuntu
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
             IMAGE=${{ steps.fix-version.outputs.value }}
@@ -207,7 +207,7 @@ jobs:
         distro: ["ubuntu:focal","ubuntu:impish"]
     runs-on: ubuntu-latest
     steps:
-      - 
+      -
         name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
@@ -221,20 +221,20 @@ jobs:
         name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      - 
+      -
         name: Login to Dockerhub Container Registry
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - 
+      -
         uses: mad9000/actions-find-and-replace-string@2
         id: fix-version
         with:
             source: ${{ matrix.distro }}
             find: ':'
-            replace: '-' 
-      - 
+            replace: '-'
+      -
         name: Build and push debian buster nwnxee image
         uses: docker/build-push-action@v2
         with:
@@ -242,7 +242,7 @@ jobs:
           pull: true
           cache-from: type=registry,ref=urothis/nwnee-community-images:nwnxee-slim-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
           cache-to: type=inline
-          file: Docker/Dockerfile.nwnxee-slim.ubuntu
+          file: src/nwnxee/Dockerfile.ubuntu.slim
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
             IMAGE=${{ steps.fix-version.outputs.value }}
@@ -252,7 +252,7 @@ jobs:
   nwnsc-build:
     runs-on: ubuntu-latest
     steps:
-      - 
+      -
         name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
@@ -266,13 +266,13 @@ jobs:
         name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      - 
+      -
         name: Login to Dockerhub Container Registry
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - 
+      -
         name: Build and push debian buster nwserver image
         uses: docker/build-push-action@v2
         with:
@@ -280,7 +280,7 @@ jobs:
           pull: true
           cache-from: type=registry,ref=urothis/nwnee-community-images:nwnsc-${{ github.event.client_payload.message.nwn_version }}
           cache-to: type=inline
-          file: Docker/Dockerfile.nwnsc
+          file: src/nwnsc/Dockerfile
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
           tags: |
@@ -290,7 +290,7 @@ jobs:
     needs: nwnsc-build
     runs-on: ubuntu-latest
     steps:
-      - 
+      -
         name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
@@ -304,20 +304,20 @@ jobs:
         name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      - 
+      -
         name: Login to Dockerhub Container Registry
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - 
+      -
         name: Build and push debian buster nwserver image
         uses: docker/build-push-action@v2
         with:
           push: true
           cache-from: type=registry,ref=urothis/nwnee-community-images:ci-base-${{ github.event.client_payload.message.nwn_version }}
           cache-to: type=inline
-          file: Docker/Dockerfile.ci-base
+          file: src/Dockerfile
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
           tags: |
@@ -327,7 +327,7 @@ jobs:
     needs: nwn-ci-base-build
     runs-on: ubuntu-latest
     steps:
-      - 
+      -
         name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
@@ -341,13 +341,13 @@ jobs:
         name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      - 
+      -
         name: Login to Dockerhub Container Registry
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - 
+      -
         name: Build and push debian buster nwserver image
         uses: docker/build-push-action@v2
         with:
@@ -355,7 +355,7 @@ jobs:
           pull: true
           cache-from: type=registry,ref=urothis/nwnee-community-images:nasher-${{ github.event.client_payload.message.nwn_version }}
           cache-to: type=inline
-          file: Docker/Dockerfile.nasher
+          file: src/nasher/Dockerfile
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
           tags: |
@@ -365,7 +365,7 @@ jobs:
     needs: nwn-ci-base-build
     runs-on: ubuntu-latest
     steps:
-      - 
+      -
         name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
@@ -379,21 +379,21 @@ jobs:
         name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      - 
+      -
         name: Login to Dockerhub Container Registry
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - 
+      -
         name: Build and push debian buster nwserver image
         uses: docker/build-push-action@v2
         with:
           push: true
-          pull: true          
+          pull: true
           cache-from: type=registry,ref=urothis/nwnee-community-images:nwsync-${{ github.event.client_payload.message.nwn_version }}
           cache-to: type=inline
-          file: Docker/Dockerfile.nwsync
+          file: src/nwsync/Dockerfile
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
           tags: |
@@ -403,7 +403,7 @@ jobs:
     needs: nwn-ci-base-build
     runs-on: ubuntu-latest
     steps:
-      - 
+      -
         name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
@@ -417,21 +417,21 @@ jobs:
         name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      - 
+      -
         name: Login to Dockerhub Container Registry
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - 
+      -
         name: Build and push debian buster nwserver image
         uses: docker/build-push-action@v2
         with:
           push: true
-          pull: true          
+          pull: true
           cache-from: type=registry,ref=urothis/nwnee-community-images:nwnt-${{ github.event.client_payload.message.nwn_version }}
           cache-to: type=inline
-          file: Docker/Dockerfile.nwnt
+          file: src/nwnt/Dockerfile
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
           tags: |
@@ -441,7 +441,7 @@ jobs:
     needs: nwn-ci-base-build
     runs-on: ubuntu-latest
     steps:
-      - 
+      -
         name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
@@ -455,22 +455,60 @@ jobs:
         name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      - 
+      -
         name: Login to Dockerhub Container Registry
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - 
+      -
         name: Build and push debian buster nwserver image
         uses: docker/build-push-action@v2
         with:
           push: true
-          pull: true          
+          pull: true
           cache-from: type=registry,ref=urothis/nwnee-community-images:nwsync-originate-${{ github.event.client_payload.message.nwn_version }}
           cache-to: type=inline
-          file: Docker/Dockerfile.nwsync_originate
+          file: src/nwsync_originate/Dockerfile
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
           tags: |
             urothis/nwnee-community-images:nwsync-originate-${{ github.event.client_payload.message.nwn_version }}
+
+  tlkify-build:
+    needs: nwn-ci-base-build
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d')"
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to Dockerhub Container Registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push debian buster nwserver image
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          pull: true
+          cache-from: type=registry,ref=urothis/nwnee-community-images:tlkify-${{ github.event.client_payload.message.nwn_version }}
+          cache-to: type=inline
+          file: src/tlkify/Dockerfile
+          build-args: |
+            NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
+          tags: |
+            urothis/nwnee-community-images:tlkify-${{ github.event.client_payload.message.nwn_version }}
