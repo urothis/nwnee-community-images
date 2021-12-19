@@ -12,10 +12,6 @@ jobs:
         distro: ["debian:buster-slim", "debian:bullseye-slim", "ubuntu:focal", "ubuntu:impish"]
     steps:
       -
-        name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
-      -
         name: Checkout
         uses: actions/checkout@v2
       -
@@ -39,7 +35,7 @@ jobs:
             find: ':'
             replace: '-'
       -
-        name: Build and push debian buster nwserver image
+        name: Build and push debian nwserver image
         uses: docker/build-push-action@v2
         with:
           push: true
@@ -61,10 +57,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
-      -
         name: Checkout
         uses: actions/checkout@v2
       -
@@ -87,6 +79,14 @@ jobs:
             source: ${{ matrix.distro }}
             find: ':'
             replace: '-'
+      -
+        name: Get NWNX Commit hash
+        id: nwnxee_commit
+        run: |
+          wget https://github.com/nwnxee/unified/releases/download/build${{ github.event.client_payload.message.nwn_version }}-HEAD/NWNX-EE.zip -P /tmp/nwnx/ &&
+          unzip /tmp/nwnx/NWNX-EE.zip -d . &&
+          echo "::set-output name=value::$(find -iname "*.txt" -exec sh -c 'for f do basename -- "$f" .txt;done' sh {} +)"
+
       -
         name: Build and push debian buster nwnxee image
         uses: docker/build-push-action@v2
@@ -101,6 +101,7 @@ jobs:
             IMAGE=${{ steps.fix-version.outputs.value }}
           tags: |
             urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
+            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${steps.nwnxee_commit.outputs.value}
 
   nwnxee-debian-slim-build:
     needs: nwserver-build
@@ -109,10 +110,6 @@ jobs:
         distro: ["debian:buster-slim", "debian:bullseye-slim"]
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
       -
         name: Checkout
         uses: actions/checkout@v2
@@ -136,6 +133,13 @@ jobs:
             source: ${{ matrix.distro }}
             find: ':'
             replace: '-'
+      -
+        name: Get NWNX Commit hash
+        id: nwnxee_commit
+        run: |
+          wget https://github.com/nwnxee/unified/releases/download/build${{ github.event.client_payload.message.nwn_version }}-HEAD/NWNX-EE.zip -P /tmp/nwnx/ &&
+          unzip /tmp/nwnx/NWNX-EE.zip -d . &&
+          echo "::set-output name=value::$(find -iname "*.txt" -exec sh -c 'for f do basename -- "$f" .txt;done' sh {} +)"
       -
         name: Build and push debian buster nwnxee image
         uses: docker/build-push-action@v2
@@ -150,6 +154,7 @@ jobs:
             IMAGE=${{ steps.fix-version.outputs.value }}
           tags: |
             urothis/nwnee-community-images:nwnxee-slim-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
+            urothis/nwnee-community-images:nwnxee-slim-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${steps.nwnxee_commit.outputs.value}
 
   nwnxee-ubuntu-build:
     needs: nwserver-build
@@ -158,10 +163,6 @@ jobs:
         distro: ["ubuntu:focal","ubuntu:impish"]
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
       -
         name: Checkout
         uses: actions/checkout@v2
@@ -186,6 +187,13 @@ jobs:
             find: ':'
             replace: '-'
       -
+        name: Get NWNX Commit hash
+        id: nwnxee_commit
+        run: |
+          wget https://github.com/nwnxee/unified/releases/download/build${{ github.event.client_payload.message.nwn_version }}-HEAD/NWNX-EE.zip -P /tmp/nwnx/ &&
+          unzip /tmp/nwnx/NWNX-EE.zip -d . &&
+          echo "::set-output name=value::$(find -iname "*.txt" -exec sh -c 'for f do basename -- "$f" .txt;done' sh {} +)"
+      -
         name: Build and push debian buster nwnxee image
         uses: docker/build-push-action@v2
         with:
@@ -199,6 +207,7 @@ jobs:
             IMAGE=${{ steps.fix-version.outputs.value }}
           tags: |
             urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
+            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${steps.nwnxee_commit.outputs.value}
 
   nwnxee-ubuntu-slim-build:
     needs: nwserver-build
@@ -207,10 +216,6 @@ jobs:
         distro: ["ubuntu:focal","ubuntu:impish"]
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
       -
         name: Checkout
         uses: actions/checkout@v2
@@ -248,14 +253,11 @@ jobs:
             IMAGE=${{ steps.fix-version.outputs.value }}
           tags: |
             urothis/nwnee-community-images:nwnxee-slim-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
+            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${steps.nwnxee_commit.outputs.value}
 
   nwnsc-build:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
       -
         name: Checkout
         uses: actions/checkout@v2
@@ -291,10 +293,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
-      -
         name: Checkout
         uses: actions/checkout@v2
       -
@@ -327,10 +325,6 @@ jobs:
     needs: nwn-ci-base-build
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
       -
         name: Checkout
         uses: actions/checkout@v2
@@ -366,10 +360,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
-      -
         name: Checkout
         uses: actions/checkout@v2
       -
@@ -403,10 +393,6 @@ jobs:
     needs: nwn-ci-base-build
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
       -
         name: Checkout
         uses: actions/checkout@v2
@@ -442,10 +428,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
-      -
         name: Checkout
         uses: actions/checkout@v2
       -
@@ -480,10 +462,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
-      -
         name: Checkout
         uses: actions/checkout@v2
       -
@@ -512,3 +490,6 @@ jobs:
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
           tags: |
             urothis/nwnee-community-images:tlkify-${{ github.event.client_payload.message.nwn_version }}
+
+
+
