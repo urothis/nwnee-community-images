@@ -80,10 +80,10 @@ jobs:
             find: ':'
             replace: '-'
       -
-        name: fix version for normal release
-        id: version_fix
+        name: Get NWNX Commit hash
+        id: shorten-distro
         run: |
-          echo "::set-output name=value::$(${${{ github.event.client_payload.message.version_fix }}-%*})"
+          echo "::set-output name=value::$("${{ steps.fix-version.outputs.value }} | cut -f1,3 -d'-')
       -
         name: Get NWNX Commit hash
         id: nwnxee_commit
@@ -105,8 +105,8 @@ jobs:
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
             IMAGE=${{ steps.fix-version.outputs.value }}
           tags: |
-            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.version_fix }}-${{ steps.fix-version.outputs.value }}
-            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.version_fix }}-${{ steps.fix-version.outputs.value }}-${{steps.nwnxee_commit.outputs.value}}
+            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.version_fix }}-${{ steps.shorten-distro.outputs.value }}
+            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.version_fix }}-${{ steps.shorten-distro.outputs.value }}-${{steps.nwnxee_commit.outputs.value}}
 
   nwnxee-debian-slim-build:
     needs: nwserver-build
