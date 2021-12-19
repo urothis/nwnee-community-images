@@ -80,6 +80,11 @@ jobs:
             find: ':'
             replace: '-'
       -
+        name: fix version for normal release
+        id: version_fix
+        run: |
+          echo "::set-output name=value::$(${${{ github.event.client_payload.message.version_fix }}-%*})"
+      -
         name: Get NWNX Commit hash
         id: nwnxee_commit
         run: |
@@ -93,15 +98,15 @@ jobs:
         with:
           push: true
           pull: true
-          cache-from: type=registry,ref=urothis/nwnee-community-images:nwnxee${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
+          cache-from: type=registry,ref=urothis/nwnee-community-images:nwnxee${{ github.event.client_payload.message.version_fix }}-${{ steps.fix-version.outputs.value }}
           cache-to: type=inline
           file: src/nwnxee/Dockerfile.debian
           build-args: |
             NWN_VERSION=${{ github.event.client_payload.message.nwn_version }}
             IMAGE=${{ steps.fix-version.outputs.value }}
           tags: |
-            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}
-            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.nwn_version }}-${{ steps.fix-version.outputs.value }}-${{steps.nwnxee_commit.outputs.value}}
+            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.version_fix }}-${{ steps.fix-version.outputs.value }}
+            urothis/nwnee-community-images:nwnxee-${{ github.event.client_payload.message.version_fix }}-${{ steps.fix-version.outputs.value }}-${{steps.nwnxee_commit.outputs.value}}
 
   nwnxee-debian-slim-build:
     needs: nwserver-build
