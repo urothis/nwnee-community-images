@@ -3,9 +3,6 @@ FROM beamdog/nwserver:8193.34 AS nwn
 FROM $IMAGE
 LABEL maintainer "urothis@gmail.com"
 ENV NWN_ARCH linux-x86
-RUN apt-get update && \
-  apt-get --no-install-recommends -y install libc6 libstdc++6 && \
-  rm -r /var/cache/apt /var/lib/apt/lists
 RUN mkdir -p /nwn/data && \
  mkdir -p /nwn/home && \
  mkdir -p /nwn/run

@@ -45,4 +45,4 @@ jobs:
           build-args: |
             IMAGE=${{ matrix.distro }}
           tags: |
-            urothis/nwnee-community-images:nwserve-8193.34-${{ steps.fix-version.outputs.value }}-arm64
+            urothis/nwnee-community-images:nwserver-8193.34-${{ steps.fix-version.outputs.value }}-arm64
