@@ -1,4 +1,4 @@
-name: Manual Push Docker Images
+name: Manual Push ARM64 Docker Images
 on:
   workflow_dispatch:
 
