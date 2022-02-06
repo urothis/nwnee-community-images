@@ -41,7 +41,7 @@ jobs:
           platforms: linux/arm64
           cache-from: type=registry,ref=urothis/nwnee-community-images:nwserve-8193.34-${{ steps.fix-version.outputs.value }}-arm64
           cache-to: type=inline
-          file: src/nwserver/assets/arm64/8193_34/Dockerfile
+          context: src/nwserver/assets/arm64/
           build-args: |
             IMAGE=${{ matrix.distro }}
           tags: |
