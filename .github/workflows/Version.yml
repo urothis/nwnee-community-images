@@ -36,7 +36,7 @@ jobs:
             replace: '-'
       -
         name: Build and push debian nwserver image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           pull: true
@@ -100,7 +100,7 @@ jobs:
             replace: '-'
       -
         name: Build and push debian buster nwnxee image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           pull: true
@@ -153,7 +153,7 @@ jobs:
           echo "::set-output name=value::$(find -iname "*.txt" -exec sh -c 'for f do basename -- "$f" .txt;done' sh {} +)"
       -
         name: Build and push debian buster nwnxee image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           pull: true
@@ -206,7 +206,7 @@ jobs:
           echo "::set-output name=value::$(find -iname "*.txt" -exec sh -c 'for f do basename -- "$f" .txt;done' sh {} +)"
       -
         name: Build and push debian buster nwnxee image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           pull: true
@@ -252,7 +252,7 @@ jobs:
             replace: '-'
       -
         name: Build and push debian buster nwnxee image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           pull: true
@@ -287,7 +287,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push debian buster nwserver image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           pull: true
@@ -321,7 +321,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push debian buster nwserver image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           cache-from: type=registry,ref=urothis/nwnee-community-images:ci-base-${{ github.event.client_payload.message.nwn_version }}
@@ -354,7 +354,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push debian buster nwserver image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           pull: true
@@ -388,7 +388,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push debian buster nwserver image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           pull: true
@@ -422,7 +422,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push debian buster nwserver image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           pull: true
@@ -456,7 +456,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push debian buster nwserver image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           pull: true
@@ -490,7 +490,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push debian buster nwserver image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           pull: true
